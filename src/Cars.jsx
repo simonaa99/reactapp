@@ -1,13 +1,18 @@
 import React from 'react';
 import OneCar from './OneCar';
 
-const Cars = ({cars}) => {
+const Cars = ({cars, onAdd, onRemove }) => {
 const name = "New Car Name";
 const description ="New Car description that we got from Car component using props.";
   return (<div className="all-cars">
-  <OneCar car={cars[0]}  />
-  <OneCar car={cars[1]} />
-  <OneCar car={cars[2]} />
+  {cars.map((car) => (
+        <OneCar
+        key ={car.id}
+        car={car} 
+        onAdd={onAdd}
+        onRemove={onRemove}
+/>
+      ))}
 
 </div>
 );

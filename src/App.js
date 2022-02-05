@@ -1,9 +1,37 @@
 import './App.css';
+import { useState } from "react";
 import NavBar from "./NavBar";
 import Cars from "./Cars";
+import Cart from "./Cart";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
-  const cars = [
+  const [cartNum, setCartNum] = useState(0);
+  const addToCart = (id) => {
+    cars.map((car) => {
+      if (car.id === id) {
+        car.amount++;
+        const a = cartNum + 1;
+        setCartNum(a);
+        console.log("car id=", car.id, "amount=", car.amount);
+      }
+    });
+  };
+  const remFromCart = (id) => {
+    cars.map((car) => {
+      if (car.id === id) {
+        
+        if (car.amount > 0) {
+          const a = cartNum - 1;car.amount--;
+          setCartNum(a);
+          console.log("car id=", car.id, "amount=", car.amount);
+        } else {
+          alert("Amount of cars is already 0.");
+        }
+      }
+    });
+  };
+  const [cars, setCars] =useState( [
     {
       id: 1,
       title: "Porche Macan",
@@ -28,14 +56,29 @@ function App() {
         "With sportier design cues and a powerful, muscular stance, Range Rover Sport is designed for impact. Cleaner, more dynamic, there’s a contemporary feel everywhere you look—from the Range Rover Sport grille, redesigned bonnet vents to the refined, yet sporty wheel options.",
       amount: 0,
     },
-  ];
+  ]);
+  
+
 
   return (
-    <div className="App">
-      <NavBar />
-      <Cars cars = {cars}/>
-    </div>
+    <BrowserRouter>
+      <NavBar cartNum={cartNum} />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Cars
+              cars={cars}
+              onAdd={addToCart}
+              onRemove={remFromCart}
+            />
+          }
+        />
+        <Route path="/cart" element={<Cart/>} />
+      </Routes>
+    </BrowserRouter>
   );
+
 }
 
 export default App;

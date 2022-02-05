@@ -1,14 +1,15 @@
 import React from "react";
 import { ImCart } from "react-icons/im";
+import { Link } from "react-router-dom";
 
-function NavBar() {
+function NavBar({ cartNum })  {
   return (
     <div className="navBar">
-      <a>Cars</a>
-      <a className="cart-items">
+      <Link to="/">Cars</Link>
+      <Link to="/cart" className="cart-items">
         <ImCart style={{ marginLeft: 10 }} />
-        <div className="cart-num">0</div>
-      </a>
+        <div className="cart-num">{cartNum}</div>
+      </Link>
     </div>
   );
 }
