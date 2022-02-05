@@ -6,17 +6,37 @@ import Cart from "./Cart";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
+  const [cartProducts, setCartProducts] = useState([]);
   const [cartNum, setCartNum] = useState(0);
+
+  const refreshCart = () => {
+    const newCars = cars.filter((car) => car.amount > 0);
+    setCartProducts(newCars);
+  };
+
+  const updateCart = (car) => {
+    setCartProducts([...cartProducts, car]);
+  };
+
+
+
   const addToCart = (id) => {
     cars.map((car) => {
       if (car.id === id) {
         car.amount++;
         const a = cartNum + 1;
         setCartNum(a);
+        if (car.amount === 1) {
+          updateCart(car);
+        } else {
+          refreshCart();
+        }
+
         console.log("car id=", car.id, "amount=", car.amount);
       }
     });
   };
+
   const remFromCart = (id) => {
     cars.map((car) => {
       if (car.id === id) {
@@ -24,9 +44,10 @@ function App() {
         if (car.amount > 0) {
           const a = cartNum - 1;car.amount--;
           setCartNum(a);
+          refreshCart();
           console.log("car id=", car.id, "amount=", car.amount);
         } else {
-          alert("Amount of cars is already 0.");
+          alert("Amount of this car is already 0.");
         }
       }
     });
@@ -74,7 +95,10 @@ function App() {
             />
           }
         />
-        <Route path="/cart" element={<Cart/>} />
+        <Route
+        path="/cart"
+        element={<Cart cartProducts={cartProducts} />}
+      />
       </Routes>
     </BrowserRouter>
   );
